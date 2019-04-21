@@ -149,7 +149,7 @@ userSchema.statics.findByToken = function (tok) {
     })
 }
 
-userSchema.statics.openId = function (id) {
+userSchema.statics.findByOpenId = function (id) {
     let user = this
     return user.findOne({
         openid: id
