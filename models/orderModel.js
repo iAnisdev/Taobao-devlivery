@@ -107,7 +107,7 @@ const orderSchema = mongoose.Schema({
             type: String,
         }
     }]
-})
+}, { collection: 'orders' })
 
 const orderModel = mongoose.model('order' , orderSchema)
 
