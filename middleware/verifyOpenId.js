@@ -17,3 +17,5 @@ const verifyOpenId = (req , res , next) => {
         })
     }
 }
+
+module.exports = verifyOpenId
