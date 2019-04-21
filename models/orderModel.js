@@ -67,7 +67,7 @@ const orderSchema = mongoose.Schema({
     status: {
         required: true,
         type: String,
-        default: 'inComing'
+        default: 'inComing' //incoming , progress , indelivery , completed , cancelled
     },
     paid: {
         required: true,
