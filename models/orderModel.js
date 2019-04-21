@@ -38,6 +38,7 @@ const orderSchema = mongoose.Schema({
     },
     userId: {
         required: true,
+        type: Number
     },
     orderBy:{
         name: {
@@ -53,7 +54,6 @@ const orderSchema = mongoose.Schema({
             required: true
         },
         _id: {
-            required: true
         },
         avatarUrl: {
             type: String,
