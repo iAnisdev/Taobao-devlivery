@@ -1,0 +1,8 @@
+200 => working fine
+1001 => invalid parameters
+
+1011 => unkonw error
+1012 => need registration first
+1101 => invalid jscode
+
+1122 => wechat error
