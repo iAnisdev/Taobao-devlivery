@@ -1,4 +1,5 @@
 const mongoose = require('mongoose')
+const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 
 const userSchema = new mongoose.Schema({
@@ -12,7 +13,10 @@ const userSchema = new mongoose.Schema({
         type: Date,
         default: Date.now
     },
-    nickName: {
+    fname: {
+        type: String
+    },
+    lname: {
         required: true,
         type: String
     },
@@ -33,7 +37,7 @@ const userSchema = new mongoose.Schema({
         type: String
     },
     gender: {
-        type: String
+        type: Boolean
     },
     country: {
         type: String
@@ -122,6 +126,21 @@ const userSchema = new mongoose.Schema({
     }],
 }, { collection: 'users' })
 
+userSchema.pre('save', function (next) {
+    let user = this
+    if (user.isModified('password')) {
+        bcrypt.genSalt(12, (err, salt) => {
+            bcrypt.hash(user.password, salt, (err, hash) => {
+                user.password = hash
+                next()
+            })
+        })
+    } else {
+        next()
+    }
+})
+
+
 userSchema.statics.generateToken = function () {
     let user = this
     let userObj = {
@@ -150,7 +169,7 @@ userSchema.statics.findByToken = function (tok) {
     let user = this
     var decode;
     try {
-        decode = jwt.verify(tok , 'A1B2C3D4')
+        decode = jwt.verify(tok, 'A1B2C3D4')
     } catch (e) {
         return Promise.reject(e)
     }
