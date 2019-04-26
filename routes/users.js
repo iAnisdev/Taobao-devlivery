@@ -18,9 +18,9 @@ router.get('/login', (req, res, next) => {
     })
   } else {
     let code = req.body.jsCode
-    let appid = 'wx7eb82154835d809d'
-    let appKey = 'df362811ad98574e8ea39b1e55032389'
-    axios.get(`https://api.weixin.qq.com/sns/jscode2session?appid=${appid}&secret=${appKey}&js_code=${code}&grant_type=authorization_code`).then((resp) => {
+    let appid = process.env.appid
+    let appSecret = process.env.appSecret
+    axios.get(`https://api.weixin.qq.com/sns/jscode2session?appid=${appid}&secret=${appSecret}&js_code=${code}&grant_type=authorization_code`).then((resp) => {
       console.log(resp.data)
       let openid = resp.data.openid
       if (openid) {
@@ -66,9 +66,9 @@ router.post('/register' , (req , res , next ) => {
   }else{
     let code = req.body.jsCode
     let wxObj = req.body.wxObj
-    let appid = 'wx7eb82154835d809d'
-    let appKey = 'df362811ad98574e8ea39b1e55032389'
-    axios.get(`https://api.weixin.qq.com/sns/jscode2session?appid=${appid}&secret=${appKey}&js_code=${code}&grant_type=authorization_code`).then((resp) => {
+    let appid = process.env.appid
+    let appSecret = process.env.appSecret
+    axios.get(`https://api.weixin.qq.com/sns/jscode2session?appid=${appid}&secret=${appSecret}&js_code=${code}&grant_type=authorization_code`).then((resp) => {
       console.log(resp.data)
       let openid = resp.data.openid
       if (openid) {
