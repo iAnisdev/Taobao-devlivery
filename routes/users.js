@@ -122,19 +122,27 @@ router.post('/register' , (req , res , next ) => {
   }
 })
 
-router.get('/cart' , (req , res , next) => {
+router.get('/cart' , verifyToken ,  (req , res , next) => {
+  let user = req.user
+  if(req.data.cart){
+    res.json({
+      status: 1001,
+      message: 'Invalid parameters'
+    })
+  }else{
 
+  }
 })
 
-router.post('/cart/update' , (req , res , next) => {
-  
+router.post('/cart/update', verifyToken , (req , res , next) => {
+  let user = req.user
 })
 
 router.get('/address' , verifyToken , (req , res , next) => {
-
+  let user = req.user
 })
 router.post('/Address/add' , verifyToken , (req , res , next) => {
-
+  let user = req.user
 })
 
 module.exports = router;
