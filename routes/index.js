@@ -18,8 +18,8 @@ router.get('/decrypt', function (req, res, next) {
     let encryptedData = req.body.encryptedData
     axios.get(`https://api.weixin.qq.com/sns/jscode2session?appid=${appid}&secret=${appSecret}&js_code=${code}&grant_type=authorization_code`).then((resp) => {
       let session_key = resp.data.session_key
-      let pc = new WXBizDataCrypt(appid , session_key)
-      let data = pc.decryptData(encryptedData , iv)
+      let pc = new WXBizDataCrypt(appid, session_key)
+      let data = pc.decryptData(encryptedData, iv)
       res.json({
         status: 200,
         data: data
@@ -35,32 +35,43 @@ router.get('/decrypt', function (req, res, next) {
 
 /* Get Item details */
 
-router.get('/item/info' , (req , res , next) => {
-  if(!req.body.url || !req.body.language){
+router.get('/item/info', (req, res, next) => {
+  if (!req.body.url || !req.body.language) {
     res.json({
       status: 1001,
       message: 'Invalid parameters'
     })
-  }else{
+  } else {
     let url = new URL(req.body.url)
+    console.log(url)
     let itemId = url.searchParams.get('id')
-    if(!itemId){
+    if (!itemId) {
       res.json({
         status: 1201,
         message: 'Invalid ID'
       })
-    }else{
-      let data = {
+    } else {
+      let params = {
         instanceKey: process.env.INSTANCE_KEY,
         language: req.body.language,
-        itemId: itemId,
         blockList: 'RootPath',
-      }
-      axios.get('http://otapi.net/service-json/BatchGetItemFullInfo' , data).then((resp) => {
-        console.log(resp.data)
-        res.json(resp.data)
+        itemId: itemId
+      };
+      axios.get(`http://otapi.net/service-json/BatchGetItemFullInfo?instanceKey=${params.instanceKey}&itemId=${params.itemId}&blockList=${params.blockList}&language=${params.language}`).then((resp) => {
+        if (resp.data.ErrorCode == 'Ok') {
+          res.json({
+            status: 200,
+            message: 'Item Found',
+            data: resp.data.Result.Item
+          })
+        } else{
+          res.json({
+            status: resp.data.ErrorCode,
+            message: resp.data.ErrorDescription
+          })
+        }
       }).catch((err) => {
-        console.log('error => ' , err)
+        console.log('error => ', err)
         res.json(err)
       })
     }
