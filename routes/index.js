@@ -13,7 +13,7 @@ router.get('/decrypt', function (req, res, next) {
   } else {
     let appid = process.env.appid
     let appSecret = process.env.appSecret
-    let code = req.body.code
+    let code = req.body.jsCode
     let iv = req.body.iv
     let encryptedData = req.body.encryptedData
     axios.get(`https://api.weixin.qq.com/sns/jscode2session?appid=${appid}&secret=${appSecret}&js_code=${code}&grant_type=authorization_code`).then((resp) => {
